@@ -15,12 +15,18 @@ import path from "path";
 import pdf from 'html-pdf'
 import { fileURLToPath } from "url";
 // Convert ES module URL to file path
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// // Read Firebase credentials
+// const serviceAccount = JSON.parse(fs.readFileSync(path.join(__dirname, "firebase-admin-sdk.json"), "utf8"));
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Read Firebase credentials
-const serviceAccount = JSON.parse(fs.readFileSync(path.join(__dirname, "firebase-admin-sdk.json"), "utf8"));
 
-
+// ✅ Load firebase-admin-sdk.json from the same directory
+const serviceAccount = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "firebase-admin-sdk.json"), "utf8")
+);
 
 dotenv.config(); // Load environment variables
 
