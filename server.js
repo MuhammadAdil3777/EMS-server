@@ -25,7 +25,7 @@ const __dirname = path.dirname(__filename);
 
 // ✅ Load firebase-admin-sdk.json from the same directory
 const serviceAccount = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "firebase-admin-sdk.json"), "utf8")
+    fs.readFileSync(path.join(__dirname, "firebase-admin-sdk.json"), "utf8")
 );
 
 dotenv.config(); // Load environment variables
@@ -41,9 +41,9 @@ app.use(bodyParser.json());
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(serviceAccount),
 });
-const supabase = createClient(process.env.VITE_SUPABASE_URL , process.env.VITE_SUPABASE_ANON_KEY);
+const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
 
 // // Send notification To All Users With Fcm Token , On An Action performing API
 // app.post("/send-notifications", async (req, res) => {
@@ -600,34 +600,34 @@ const sendSlackNotification = async (message) => {
 // Schedule tasks using cron
 cron.schedule("45 8 * * *", () => {
     sendSlackNotification("🌞 Good Morning! Please Don't Forget To Check In.");
-  }, {
+}, {
     timezone: "Asia/Karachi"
-  });
+});
 
-  cron.schedule("45 16 * * *", () => {
+cron.schedule("45 16 * * *", () => {
     sendSlackNotification("Hello Everyone! Ensure You Have Checked Out From EMS.");
-  }, {
+}, {
     timezone: "Asia/Karachi"
-  });
+});
 
-  cron.schedule("45 12 * * *", () => {
+cron.schedule("45 12 * * *", () => {
     sendSlackNotification("🔔 Reminder: Please Dont Forget To start Break!");
-  }, {
+}, {
     timezone: "Asia/Karachi"
-  });
+});
 
-  cron.schedule("45 13 * * *", () => {
+cron.schedule("45 13 * * *", () => {
     sendSlackNotification("🔔 Reminder: Please Dont Forget To End Break!");
-  }, {
+}, {
     timezone: "Asia/Karachi"
-  });
+});
 
 
 
 
-  // Email sending function
-  const sendEmail = async (req, res) => {
-    const { senderEmail, recipientEmail, subject, employeeName , leaveType , startDate , endDate , reason } = req.body;
+// Email sending function
+const sendEmail = async (req, res) => {
+    const { senderEmail, recipientEmail, subject, employeeName, leaveType, startDate, endDate, reason } = req.body;
 
     // Create transporter
     let transporter = nodemailer.createTransport({
@@ -676,7 +676,7 @@ cron.schedule("45 8 * * *", () => {
         from: process.env.VITE_EMAIL_USER, // The email that actually sends the email
         to: recipientEmail, // Admin's email
         subject: subject,
-        text: message,
+        html: message,
         replyTo: senderEmail, // This ensures the admin’s reply goes to the user
     };
 
@@ -688,7 +688,7 @@ cron.schedule("45 8 * * *", () => {
     } catch (error) {
         console.error("Error sending email:", error);
         res.status(500).json({ error: "Failed to send email" });
-    }sendEmail
+    } sendEmail
 };
 // API Route
 app.post("/send-email", sendEmail);
@@ -701,39 +701,39 @@ app.post("/send-alertemail", async (req, res) => {
     const { recipients, subject, message } = req.body;
 
     if (!recipients || recipients.length === 0) {
-      return res.status(400).json({ error: "Recipient list is empty" });
+        return res.status(400).json({ error: "Recipient list is empty" });
     }
 
     try {
-      // Setup transporter
-      const transporter = nodemailer.createTransport({
-        service: "gmail", // or another provider
-        auth: {
-            user: process.env.VITE_EMAIL_USER, // Your email (EMS system email)
-            pass: process.env.VITE_EMAIL_PASS, // Your app password
-        },
-      });
+        // Setup transporter
+        const transporter = nodemailer.createTransport({
+            service: "gmail", // or another provider
+            auth: {
+                user: process.env.VITE_EMAIL_USER, // Your email (EMS system email)
+                pass: process.env.VITE_EMAIL_PASS, // Your app password
+            },
+        });
 
-      // Send email
-      const info = await transporter.sendMail({
-        from: process.env.VITE_EMAIL_USER, // The email that actually sends the email
-        to: "", // empty TO
-        bcc: recipients, // list of emails
-        subject,
-        text: message, // or use html: "<b>Hello</b>"
-      });
+        // Send email
+        const info = await transporter.sendMail({
+            from: process.env.VITE_EMAIL_USER, // The email that actually sends the email
+            to: "", // empty TO
+            bcc: recipients, // list of emails
+            subject,
+            text: message, // or use html: "<b>Hello</b>"
+        });
 
-      console.log("Message sent: %s", info.messageId);
-      res.json({ status: "Emails sent successfully" });
+        console.log("Message sent: %s", info.messageId);
+        res.json({ status: "Emails sent successfully" });
     } catch (error) {
-      console.error("Error sending email:", error);
-      res.status(500).json({ error: "Failed to send emails", detail: error.message });
+        console.error("Error sending email:", error);
+        res.status(500).json({ error: "Failed to send emails", detail: error.message });
     }
-  });
+});
 
 
 const sendAdminResponse = async (req, res) => {
-    const {employeeName,  userEmail, leaveType, startDate } = req.body;
+    const { employeeName, userEmail, leaveType, startDate } = req.body;
 
     let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -1230,185 +1230,185 @@ app.post('/generate-pdfMonthlyOfEmployee', (req, res) => {
 const holidaydates = [];
 
 const isWorkingDay = (date) => {
-  const day = date.getDay(); // Get the day of the week (0 = Sunday, 6 = Saturday)
-  const dateStr = date.toISOString().split('T')[0];
-  if (holidaydates.includes(dateStr)) {
-    return false;
-  }
-  return day !== 0 && day !== 6; // Return true if it's not Saturday or Sunday
+    const day = date.getDay(); // Get the day of the week (0 = Sunday, 6 = Saturday)
+    const dateStr = date.toISOString().split('T')[0];
+    if (holidaydates.includes(dateStr)) {
+        return false;
+    }
+    return day !== 0 && day !== 6; // Return true if it's not Saturday or Sunday
 };
 
 async function fetchholidays() {
-  const { data, error } = await supabase
-    .from('holidays')
-    .select('date'); // Adjust to select the date field from your holidays table
+    const { data, error } = await supabase
+        .from('holidays')
+        .select('date'); // Adjust to select the date field from your holidays table
 
-  if (error) {
-    console.error('Error fetching holidays:', error);
-    return;
-  }
-
-  for (const holiday of data) {
-    const convertedDate = new Date(holiday.date);
-    const dateStr = convertedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
-
-    if (!holidaydates.includes(dateStr)) {
-      holidaydates.push(dateStr);
+    if (error) {
+        console.error('Error fetching holidays:', error);
+        return;
     }
-  }
+
+    for (const holiday of data) {
+        const convertedDate = new Date(holiday.date);
+        const dateStr = convertedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+
+        if (!holidaydates.includes(dateStr)) {
+            holidaydates.push(dateStr);
+        }
+    }
 }
 
 const fetchUsers = async () => {
-  const today = new Date();
-  const dateStr = today.toISOString().split('T')[0];
+    const today = new Date();
+    const dateStr = today.toISOString().split('T')[0];
 
-  if (!isWorkingDay(today) || holidaydates.includes(dateStr)) {
-    console.log('Today is not a working day or is a holiday. Skipping fetchUsers.');
-    return;
-  }
+    if (!isWorkingDay(today) || holidaydates.includes(dateStr)) {
+        console.log('Today is not a working day or is a holiday. Skipping fetchUsers.');
+        return;
+    }
 
-  try {
-    console.log('Fetching users...');
+    try {
+        console.log('Fetching users...');
 
-    // Get today's date range
-    const todayDate = today.toISOString().split('T')[0];
-    const startOfDay = `${todayDate}T00:00:00.000Z`;
-    const endOfDay = `${todayDate}T23:59:59.999Z`;
+        // Get today's date range
+        const todayDate = today.toISOString().split('T')[0];
+        const startOfDay = `${todayDate}T00:00:00.000Z`;
+        const endOfDay = `${todayDate}T23:59:59.999Z`;
 
-    // Fetch all users
-    const { data: users, error: usersError } = await supabase.from('users').select('*');
-    if (usersError) throw usersError;
+        // Fetch all users
+        const { data: users, error: usersError } = await supabase.from('users').select('*');
+        if (usersError) throw usersError;
 
-    console.log(`Total users fetched: ${users.length}`);
+        console.log(`Total users fetched: ${users.length}`);
 
-    // Fetch all today's attendance records
-    const { data: attendanceLogs, error: attendanceError } = await supabase
-      .from('attendance_logs')
-      .select('*')
-      .gte('check_in', startOfDay)
-      .lt('check_in', endOfDay);
-    if (attendanceError) throw attendanceError;
+        // Fetch all today's attendance records
+        const { data: attendanceLogs, error: attendanceError } = await supabase
+            .from('attendance_logs')
+            .select('*')
+            .gte('check_in', startOfDay)
+            .lt('check_in', endOfDay);
+        if (attendanceError) throw attendanceError;
 
-    // Fetch all today's absentee records
-    const { data: absentees, error: absenteeError } = await supabase
-      .from('absentees')
-      .select('*')
-      .gte('created_at', startOfDay)
-      .lt('created_at', endOfDay);
-    if (absenteeError) throw absenteeError;
+        // Fetch all today's absentee records
+        const { data: absentees, error: absenteeError } = await supabase
+            .from('absentees')
+            .select('*')
+            .gte('created_at', startOfDay)
+            .lt('created_at', endOfDay);
+        if (absenteeError) throw absenteeError;
 
-    // Arrays to store updates
-    let attendanceUpdates = []; // For updating checkout times in attendance_logs
-    let absenteeRecords = [];   // For inserting absentee records into absentees
+        // Arrays to store updates
+        let attendanceUpdates = []; // For updating checkout times in attendance_logs
+        let absenteeRecords = [];   // For inserting absentee records into absentees
 
-    // Loop through each user
-    for (const user of users) {
-      console.log(`Processing user: ${user.id}`);
+        // Loop through each user
+        for (const user of users) {
+            console.log(`Processing user: ${user.id}`);
 
-      // Find user's attendance for today
-      const userAttendance = attendanceLogs.find(log => log.user_id === user.id);
+            // Find user's attendance for today
+            const userAttendance = attendanceLogs.find(log => log.user_id === user.id);
 
-      // Check if the user is already marked absent
-      const existingAbsentee = absentees.find(absent => absent.user_id === user.id);
+            // Check if the user is already marked absent
+            const existingAbsentee = absentees.find(absent => absent.user_id === user.id);
 
-      // Case 1: User has NO check-in record
-      if (!userAttendance) {
-        console.log(`User ${user.id} has no check-in record.`);
+            // Case 1: User has NO check-in record
+            if (!userAttendance) {
+                console.log(`User ${user.id} has no check-in record.`);
 
-        if (existingAbsentee) {
-          console.log(`User ${user.id} is already marked absent. Skipping...`);
-          continue;
+                if (existingAbsentee) {
+                    console.log(`User ${user.id} is already marked absent. Skipping...`);
+                    continue;
+                }
+
+                console.log(`Marking user ${user.id} as absent for Full Day.`);
+                absenteeRecords.push({ user_id: user.id, absentee_type: 'Absent', absentee_Timing: 'Full Day' });
+                continue;
+            }
+
+            // Case 2: User has check-in but no check-out
+            if (userAttendance.check_in && !userAttendance.check_out) {
+                console.log(`User ${user.id} has checked in but no check-out.`);
+
+                // Set the checkout time to 4:30 PM PKT (11:30 AM UTC)
+                const checkoutTime = `${todayDate}T11:30:00.000Z`;
+
+                // Add to attendanceUpdates array
+                attendanceUpdates.push({
+                    id: userAttendance.id, // Unique ID of the attendance record
+                    check_out: checkoutTime, // New checkout time
+                    autocheckout: 'yes' // Mark as auto-checkout
+                });
+
+                console.log(`User ${user.id} checkout time will be updated to 4:30 PM PKT.`);
+                continue;
+            }
+
+            // Case 3: User has both check-in and check-out (No action needed)
+            if (userAttendance.check_in && userAttendance.check_out) {
+                console.log(`User ${user.id} has both check-in and check-out. No action needed.`);
+                absenteeRecords.push({ user_id: user.id, absentee_type: 'Not Absent' });
+                continue;
+            }
         }
 
-        console.log(`Marking user ${user.id} as absent for Full Day.`);
-        absenteeRecords.push({ user_id: user.id, absentee_type: 'Absent', absentee_Timing: 'Full Day' });
-        continue;
-      }
+        // Remove duplicate entries based on user_id for absentee records
+        const uniqueAbsenteeRecords = [];
+        const seenUserIds = new Set();
 
-      // Case 2: User has check-in but no check-out
-      if (userAttendance.check_in && !userAttendance.check_out) {
-        console.log(`User ${user.id} has checked in but no check-out.`);
-
-        // Set the checkout time to 4:30 PM PKT (11:30 AM UTC)
-        const checkoutTime = `${todayDate}T11:30:00.000Z`;
-
-        // Add to attendanceUpdates array
-        attendanceUpdates.push({
-          id: userAttendance.id, // Unique ID of the attendance record
-          check_out: checkoutTime, // New checkout time
-          autocheckout: 'yes' // Mark as auto-checkout
+        absenteeRecords.forEach(record => {
+            if (!seenUserIds.has(record.user_id)) {
+                seenUserIds.add(record.user_id);
+                uniqueAbsenteeRecords.push(record);
+            }
         });
 
-        console.log(`User ${user.id} checkout time will be updated to 4:30 PM PKT.`);
-        continue;
-      }
+        // Remove 'Not Absent' users and create a new array
+        const finalAbsentees = uniqueAbsenteeRecords.filter(record => record.absentee_type !== 'Not Absent');
 
-      // Case 3: User has both check-in and check-out (No action needed)
-      if (userAttendance.check_in && userAttendance.check_out) {
-        console.log(`User ${user.id} has both check-in and check-out. No action needed.`);
-        absenteeRecords.push({ user_id: user.id, absentee_type: 'Not Absent' });
-        continue;
-      }
-    }
+        // Log final absent users
+        console.log('Final Absent Users Data:', finalAbsentees);
 
-    // Remove duplicate entries based on user_id for absentee records
-    const uniqueAbsenteeRecords = [];
-    const seenUserIds = new Set();
+        // Perform batch updates for attendance logs
+        if (attendanceUpdates.length > 0) {
+            console.log('Updating attendance logs with checkout times...');
+            for (const update of attendanceUpdates) {
+                const { error: updateError } = await supabase
+                    .from('attendance_logs')
+                    .update({ check_out: update.check_out, autocheckout: 'yes' })
+                    .eq('id', update.id);
 
-    absenteeRecords.forEach(record => {
-      if (!seenUserIds.has(record.user_id)) {
-        seenUserIds.add(record.user_id);
-        uniqueAbsenteeRecords.push(record);
-      }
-    });
-
-    // Remove 'Not Absent' users and create a new array
-    const finalAbsentees = uniqueAbsenteeRecords.filter(record => record.absentee_type !== 'Not Absent');
-
-    // Log final absent users
-    console.log('Final Absent Users Data:', finalAbsentees);
-
-    // Perform batch updates for attendance logs
-    if (attendanceUpdates.length > 0) {
-      console.log('Updating attendance logs with checkout times...');
-      for (const update of attendanceUpdates) {
-        const { error: updateError } = await supabase
-          .from('attendance_logs')
-          .update({ check_out: update.check_out, autocheckout: 'yes' })
-          .eq('id', update.id);
-
-        if (updateError) {
-          console.error('Error updating attendance log:', updateError);
+                if (updateError) {
+                    console.error('Error updating attendance log:', updateError);
+                } else {
+                    console.log(`Updated attendance log for user ${update.id}.`);
+                }
+            }
+            console.log('Attendance logs updated successfully.');
         } else {
-          console.log(`Updated attendance log for user ${update.id}.`);
+            console.log('No attendance logs to update.');
         }
-      }
-      console.log('Attendance logs updated successfully.');
-    } else {
-      console.log('No attendance logs to update.');
-    }
 
-    // Insert absentee records into the database
-    if (finalAbsentees.length > 0) {
-      console.log('Inserting absentee records into the database...');
-      const { error: insertError } = await supabase.from('absentees').insert(finalAbsentees);
-      if (insertError) throw insertError;
-      console.log('Database updated successfully with absent users.');
-    } else {
-      console.log('No absent users to update in the database.');
+        // Insert absentee records into the database
+        if (finalAbsentees.length > 0) {
+            console.log('Inserting absentee records into the database...');
+            const { error: insertError } = await supabase.from('absentees').insert(finalAbsentees);
+            if (insertError) throw insertError;
+            console.log('Database updated successfully with absent users.');
+        } else {
+            console.log('No absent users to update in the database.');
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
     }
-  } catch (error) {
-    console.error('Error fetching users:', error);
-  }
 };
 
 // Schedule fetchUsers to run at 9:00 PM PKT daily
 cron.schedule('0 21 * * *', async () => {
-  console.log('Running fetchUsers cron job at 9:00 PM PKT...');
-  await fetchholidays(); // Fetch holidays before running fetchUsers
-  await fetchUsers();
+    console.log('Running fetchUsers cron job at 9:00 PM PKT...');
+    await fetchholidays(); // Fetch holidays before running fetchUsers
+    await fetchUsers();
 }, {
-  timezone: 'Asia/Karachi'
+    timezone: 'Asia/Karachi'
 });
 
 // ... (Rest of your existing server.js code, including app.listen, remains unchanged)
