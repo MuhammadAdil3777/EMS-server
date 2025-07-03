@@ -720,7 +720,7 @@ app.post("/send-alertemail", async (req, res) => {
             to: "", // empty TO
             bcc: recipients, // list of emails
             subject,
-            text: message, // or use html: "<b>Hello</b>"
+            html: message, // or use html: "<b>Hello</b>"
         });
 
         console.log("Message sent: %s", info.messageId);
